@@ -1,0 +1,14 @@
+FROM balenalib/%%BALENA_ARCH%%-alpine-python:3.8
+
+# Fix python path for Alpine
+ENV PYTHONPATH "${PYTHONPATH}:/usr/lib/python3.8/site-packages"
+
+RUN install_packages py3-dbus
+
+WORKDIR /usr/src/app
+
+COPY start.sh ./
+
+COPY client.py ./
+
+CMD ["sh","./start.sh"]

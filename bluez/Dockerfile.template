@@ -1,0 +1,8 @@
+FROM balenalib/%%BALENA_ARCH%%-alpine
+
+RUN apk add --update --no-cache bluez \
+				bluez-firmware \
+				dbus \
+				util-linux # rfkill
+COPY *.sh ./
+CMD ["/bin/bash", "entry.sh"]

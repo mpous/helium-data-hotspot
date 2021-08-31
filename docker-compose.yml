@@ -28,9 +28,60 @@ services:
     labels:
       io.balena.features.dbus: '1'
 
+  dbus:
+    build: ./dbus
+    restart: always
+    privileged: true
+    ports:
+      - "55884:55884"
+    volumes:
+      - 'dbus-config:/etc/dbus-1/system.d/'
+
+  bluez:
+    build: ./bluez
+    restart: always
+    privileged: true
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=localhost,port=55884'
+    labels:
+      io.balena.features.dbus: '1'
+    depends_on:
+      - dbus
+
+  connman:
+    build: ./connman
+    restart: always
+    privileged: true
+    network_mode: host
+    environment:
+      - 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=localhost,port=55884'
+    labels:
+      io.balena.features.dbus: '1'
+    depends_on:
+      - dbus
+
+  gateway-config:
+    build: ./gateway-config
+    restart: always
+    environment:
+      - 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=dbus,port=55884'
+      # The system bus forbids a lot of actions by default, use the session
+      # bus config instead
+      #- 'DBUS_SESSION_BUS_ADDRESS=tcp:host=dbus,port=55884'
+      #- 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=dbus,port=55887'
+    volumes:
+      - 'dbus-config:/mnt/dbus-config'
+    depends_on:
+      - dbus
+      - bluez
+      - connman
       
 volumes:
   miner-storage:
   miner-log:
   pktfwdr:
+  dbus-config:
 
