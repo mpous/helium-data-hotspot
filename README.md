@@ -4,7 +4,7 @@ This is a balena version based on the Nebra helium hotspot.
 
 ## Disclaimer
 
-This Helium Hotspot is going to transfer LoRa data to Helium but it's not going to perform proof-of-coverage or anything else to retrieve tokens.
+*This Helium Hotspot is going to transfer LoRa data to Helium but it's not going to perform proof-of-coverage or anything else to retrieve tokens.*
 
 ## Requirements
 
