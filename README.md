@@ -54,9 +54,8 @@ git submodule update --init
 - See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
 
 Once the device is online and the services `packet-forwarder` and `helium-miner` are downloaded and installed go to `Device Variables`
-
-- Create the variable for all the services `VARIANT` with your hardware definition
-- Create the variable for all the services `REGION_OVERRIDE` with your LoRa region
+* Create the variable for all the services `VARIANT` with your hardware definition (e.g. `DIY-RAK2287`). You can find here [the list of hardware compatible](https://github.com/NebraLtd/helium-hardware-definitions). 
+* Create the variable for all the services `REGION_OVERRIDE` with your LoRa region (e.g. `EU868`). You can find here [the list of LoRa regions compatible](https://github.com/NebraLtd/hm-pktfwd).
 
 ## Run the Helium Hotspot
 
@@ -75,3 +74,6 @@ And you will get something like this:
 }
 `
 
+## Attributions
+
+Thank you to Nebra for developing and balenifying the Helium Hotspot and Joseph from balena to work on the dbus + conman issues.
