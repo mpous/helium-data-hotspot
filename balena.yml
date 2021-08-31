@@ -1,0 +1,30 @@
+name: Helium Data Hotspot
+type: sw.application
+description: >-
+  Deploys the Helium Data Hotspot that doesn't mine any HNT
+joinable: false
+post-provisioning: >-
+  ## Usage instructions
+  
+  WIP
+  
+assets:
+  repository:
+    type: blob.asset
+    data:
+      url: 'https://github.com/mpous/helium-data-hotspot'
+  logo:
+    type: blob.asset
+    data:
+      url: >-
+        https://raw.githubusercontent.com/helium-data-hotspot/main/resources/logo_small.png
+data:
+  applicationEnvironmentVariables:
+    - VARIANT: DIY-RAK2287
+    - REGION_OVERRIDE: EU868
+  defaultDeviceType: raspberrypi4-64
+  supportedDeviceTypes:
+    - raspberrypi3
+    - raspberrypi3-64
+    - raspberrypi4-64
+    - fincm3
