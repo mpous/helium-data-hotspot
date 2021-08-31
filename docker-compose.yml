@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+
+  packet-forwarder:
+    build: ./hm-pktfwd
+    privileged: true
+    volumes:
+      - 'pktfwdr:/var/pktfwd'
+
+  helium-miner:
+    build: ./hm-gatewayrs
+    expose:
+      - "1680"   
+    ports:
+      - "44158:44158/tcp"
+    volumes:
+      - 'miner-storage:/var/data'
+      - 'miner-log:/var/log/miner'
+      - 'pktfwdr:/var/pktfwd'
+    cap_add:
+      - SYS_RAWIO
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+    environment:
+      - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
+      - 'RELEASE_BUMPER=foobar'
+    labels:
+      io.balena.features.dbus: '1'
+
+      
+volumes:
+  miner-storage:
+  miner-log:
+  pktfwdr:
+
