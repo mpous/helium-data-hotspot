@@ -53,6 +53,25 @@ git submodule update --init
 - Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code to the fleet with `balena push <fleet-name>`
 - See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
 
+Once the device is online and the services `packet-forwarder` and `helium-miner` are downloaded and installed go to `Device Variables`
 
+- Create the variable for all the services `VARIANT` with your hardware definition
+- Create the variable for all the services `REGION_OVERRIDE` with your LoRa region
 
+## Run the Helium Hotspot
+
+To check that everything is running properly, go to the Terminal and select the `helium-miner` service, then introduce. 
+
+`
+helium_gateway key info
+`
+
+And you will get something like this:
+
+`
+{
+  "address": <hotspot address>,
+  "name": <hotspot name>
+}
+`
 
