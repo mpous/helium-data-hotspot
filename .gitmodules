@@ -1,8 +1,8 @@
-[submodule "hm-gatewayrs"]
-	path = hm-gatewayrs
-	url = https://github.com/nebraltd/hm-gatewayrs
-[submodule "hm-pktfwd"]
-	path = hm-pktfwd
-	url = https://github.com/nebraltd/hm-pktfwd
+#[submodule "hm-gatewayrs"]
+#	path = hm-gatewayrs
+#	url = https://github.com/nebraltd/hm-gatewayrs
+#[submodule "hm-pktfwd"]
+#	path = hm-pktfwd
+#	url = https://github.com/nebraltd/hm-pktfwd
 
 
