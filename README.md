@@ -76,6 +76,83 @@ And you will get something like this:
 
 ## Join the Helium blockchain with your data-only hotspot
 
+To join the Helium blockchain, at the moment (summer 2021) you only can use the [Helium CLI](https://docs.helium.com/wallets/cli-wallet/). The Helium app is still not compatible with the data-only hotspots. Install the [Helium CLI](https://docs.helium.com/wallets/cli-wallet/) wallet and follow these steps:
+
+### Create a Helium wallet
+
+To-Do
+
+### Add the hotspot from balenaCloud
+
+Go to your device on balenaCloud and type on the HostOS terminal (before change `YOUR_WALLET` by your public Helium wallet ID):
+
+```
+root@d83bf778fc69:/etc/helium_gateway# helium_gateway add --owner YOUR_WALLET --payer YOUR_WALLET
+{
+  "address": "13yTun8uFPgouvEjagEmh3CL1dUmvg2pZbnTDeJn7efVcz9b8Nb",
+  "fee": 65000,
+  "mode": "dataonly",
+  "owner": "YOUR_WALLET",
+  "payer": "YOUR_WALLET",
+  "staking fee": 1000000,
+  "txn": "CrMBCXXXXXXW2IdILSKGQDxWiss36XXXXXXTxXoSIQGHmbxeloVim55rCniKKUrl/sZBaipNtqxv+cSjBOO/ViJAlyx1eRQKdpkBQlbOqeLEH8E2QAqCXXXXXmmrucRsAhWeckXnnp22tbppKBi9mehnYoH64mcozph8BSohAeQQE+pHM1tiHSC0ihkA8VorLN+m7ddqcepNPcjP08V6OMCEPUDo+wM="
+}
+```
+
+Remember that to confirm all the commands you will need to add `--commit` at the end of the command.
+
+Then go to your computer where you installed the Helium wallet CLI software. Copy your `txn` from the previous JSON response and type:
+
+```
+MacBookPro-Marc-Pous-2827:helium-wallet-v1.6.6-x86-64-macos marcpous$ ./helium-wallet hotspots add YOUR_TXN --commit
+Password: [hidden]
++-------------+-----------------------------------------------------+
+| Key         | Value                                               |
++-------------+-----------------------------------------------------+
+| Address     | YOUR_ADDRESS                                        |
++-------------+-----------------------------------------------------+
+| Payer       | YOUR_WALLET                                         |
++-------------+-----------------------------------------------------+
+| Fee         | 65000                                               |
++-------------+-----------------------------------------------------+
+| Staking fee | 1000000                                             |
++-------------+-----------------------------------------------------+
+| Hash        | YOUR_HASH                                           |
++-------------+-----------------------------------------------------+
+```
+
+You will need to have some Data Credits to be able to do this operation (1065000 DCs).
+
+Finally you will need to assert the location of the data-only Helium hotspot. Cpy your 
+
+```
+MacBookPro-Marc-Pous-2827:helium-wallet-v1.6.6-x86-64-macos marcpous$ ./helium-wallet hotspots assert --gateway YOUR_ADDRESS --lat=YOUR_LAT --lon=YOUR_LON --mode dataonly --commit
+Password: [hidden]
++------------------+-----------------------------------------------------+
+| Key              | Value                                               |
++------------------+-----------------------------------------------------+
+| Address          | YOUR_ADDRESS                                        |
++------------------+-----------------------------------------------------+
+| Location         | LOCATION_HASH                                       |
++------------------+-----------------------------------------------------+
+| Payer            | YOUR_WALLET                                         |
++------------------+-----------------------------------------------------+
+| Nonce            | 1                                                   |
++------------------+-----------------------------------------------------+
+| Fee (DC)         | 55000                                               |
++------------------+-----------------------------------------------------+
+| Staking Fee (DC) | 500000                                              |
++------------------+-----------------------------------------------------+
+| Gain (dBi)       | 1.2                                                 |
++------------------+-----------------------------------------------------+
+| Elevation        | 0                                                   |
++------------------+-----------------------------------------------------+
+| Hash             | YOUR_HASH                                           |
++------------------+-----------------------------------------------------+
+
+```
+
+And now that should have worked.
 
 
 ## Attributions
