@@ -53,9 +53,16 @@ git submodule update --init
 - Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code to the fleet with `balena push <fleet-name>`
 - See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
 
-Once the device is online and the services `packet-forwarder` and `helium-miner` are downloaded and installed go to `Device Variables`
+## Device Variables
+
+Once the device is online and the services `packet-forwarder` and `helium-miner` are downloaded and installed go to `Device Variables`:
+
 * Create the variable for all the services `VARIANT` with your hardware definition (e.g. `DIY-RAK2287`). You can find here [the list of hardware compatible](https://github.com/NebraLtd/helium-hardware-definitions). 
+
 * Create the variable for all the services `REGION_OVERRIDE` with your LoRa region (e.g. `EU868`). You can find here [the list of LoRa regions compatible](https://github.com/NebraLtd/hm-pktfwd).
+
+At that moment the hotspot should be running showing some errors on connecting to the Blockchain on the balenaCloud Logs.
+
 
 ## Run the Helium Hotspot
 
