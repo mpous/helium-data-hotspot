@@ -87,7 +87,17 @@ To join the Helium blockchain, at the moment (summer 2021) you only can use the 
 
 ### Create a Helium wallet
 
-To-Do
+Install the Helium wallet CLI or use the wallet key from your mobile application. In case that you need to create a wallet from scratch, just type and follow the instructions.
+
+```
+helium-wallet create basic
+```
+
+Then to see `YOUR_WALLET` of the Helium wallet type:
+
+```
+helium-wallet info
+```
 
 ### Add the hotspot from balenaCloud
 
