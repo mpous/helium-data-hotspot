@@ -1,10 +1,10 @@
-# helium-data-hotspot
+# Helium data-only Hotspot
 
 This is a balena version based on the Nebra helium hotspot.
 
 ## Disclaimer
 
-*This Helium Hotspot is going to transfer LoRa data to Helium but it's not going to perform proof-of-coverage or anything else to retrieve tokens.*
+*This Helium Hotspot is going to transfer LoRa data to Helium but it's not going to perform proof-of-coverage or anything else to retrieve tokens. Read more information about the milestones and what's possible to get [here](https://docs.helium.com/mine-hnt/light-hotspots)*
 
 ## Requirements
 
@@ -73,6 +73,10 @@ And you will get something like this:
   "name": <hotspot name>
 }
 `
+
+## Join the Helium blockchain with your data-only hotspot
+
+
 
 ## Attributions
 
