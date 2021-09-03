@@ -17,14 +17,11 @@ assets:
     type: blob.asset
     data:
       url: >-
-        https://raw.githubusercontent.com/helium-data-hotspot/main/resources/logo_small.png
+        https://raw.githubusercontent.com/mpous/helium-data-hotspot/logo.png
 data:
   applicationEnvironmentVariables:
     - VARIANT: DIY-RAK2287
     - REGION_OVERRIDE: EU868
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
-    - raspberrypi3
-    - raspberrypi3-64
     - raspberrypi4-64
-    - fincm3
