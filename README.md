@@ -89,13 +89,13 @@ Go to your device on balenaCloud and type on the HostOS terminal (before change 
 ```
 root@d83bf778fc69:/etc/helium_gateway# helium_gateway add --owner YOUR_WALLET --payer YOUR_WALLET
 {
-  "address": "13yTun8uFPgouvEjagEmh3CL1dUmvg2pZbnTDeJn7efVcz9b8Nb",
+  "address": "YOUR_ADDRESS",
   "fee": 65000,
   "mode": "dataonly",
   "owner": "YOUR_WALLET",
   "payer": "YOUR_WALLET",
   "staking fee": 1000000,
-  "txn": "CrMBCXXXXXXW2IdILSKGQDxWiss36XXXXXXTxXoSIQGHmbxeloVim55rCniKKUrl/sZBaipNtqxv+cSjBOO/ViJAlyx1eRQKdpkBQlbOqeLEH8E2QAqCXXXXXmmrucRsAhWeckXnnp22tbppKBi9mehnYoH64mcozph8BSohAeQQE+pHM1tiHSC0ihkA8VorLN+m7ddqcepNPcjP08V6OMCEPUDo+wM="
+  "txn": "YOUR_TXN"
 }
 ```
 
