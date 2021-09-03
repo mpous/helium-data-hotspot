@@ -171,6 +171,17 @@ Password: [hidden]
 
 And now that should have worked.
 
+## Backup your gateway_key.bin file
+
+*DISCLAIMER: It's very important that at this point you backup the gateway_key of your hotspot. If you loose this key, you will not be able to use this hotspot anymore.*
+
+Follow this instructions to backup your `gateway_key.bin` file of your hotspot.
+
+1. Open an SSH session to the "host-os" on balenaCloud Terminal
+2. Type this command and keep note of the `(YOUR INSTANCE)_miner-storage`: `ls /var/lib/docker/volumes`
+3. Type this command to get a link to download the gateway key (note to replace the `YOUR INSTANCE` part with the container number that you got from the previous command) `curl -F "file=@/var/lib/docker/volumes/(YOUR INSTANCE)_miner-storage/_data#/gateway_key.bin" https://file.io`
+4. Use the outputted file.io link to securely download your swarm key. The link only works one time.
+
 
 ## Attributions
 
