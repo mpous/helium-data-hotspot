@@ -182,7 +182,17 @@ Follow this instructions to backup your `gateway_key.bin` file of your hotspot.
 3. Type this command to get a link to download the gateway key (note to replace the `YOUR INSTANCE` part with the container number that you got from the previous command) `curl -F "file=@/var/lib/docker/volumes/(YOUR INSTANCE)_miner-storage/_data#/gateway_key.bin" https://file.io`
 4. Use the outputted file.io link to securely download your swarm key. The link only works one time.
 
+## Restore your gateway_key.bin file on your new file
+
+
+1. Open an SSH session to the "host-os"
+2. Type this command and keep note of the `(YOUR INSTANCE)_miner-storage` information: `ls /var/lib/docker/volumes`
+3. Navigate to where the swarm_key is stored cd /var/lib/docker/volumes/(YOUR INSTANCE)_miner-storage/_data#/
+4. Remove the original `gateway_key.bin` file `rm gateway_key.bin`
+5. Upload your `gateway_key.bin` that you wish to restore onto file.io and do `curl -LJO [FILE.IO UPLOAD LINK]`
+6. Reboot miner and you will see it restored :)
+
 
 ## Attributions
 
-Thank you to Nebra for developing and balenifying the Helium Hotspot and Joseph from balena to work on the dbus + conman issues.
+Thank you to Nebra for developing and balenifying the Helium Hotspot, Helium developers community, Travis and Joseph from balena to work on the dbus + conman issues.
