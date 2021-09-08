@@ -56,7 +56,7 @@ git submodule update --init
 
 ## Device Variables
 
-Once the device is online and the services `packet-forwarder` and `helium-miner` are downloaded and installed go to `Device Variables`:
+Once the device is online and the services `packet-forwarder` and `gatewayrs` are downloaded and installed go to `Device Variables`:
 
 * Create the variable for all the services `VARIANT` with your hardware definition. During the test is being used a Raspberry Pi 4 with RAK2287 LoRa concentrator and the `VARIANT` is defined  `DIY-RAK2287`. You can find here [the list of hardware compatible](https://github.com/NebraLtd/helium-hardware-definitions). 
 
@@ -67,7 +67,7 @@ At that moment the hotspot should be running showing some errors on connecting t
 
 ## Run the Helium Hotspot
 
-To check that everything is running properly, go to the Terminal and select the `helium-miner` service, then introduce. 
+To check that everything is running properly, go to the Terminal and select the `gatewayrs` service, then introduce. 
 
 `
 helium_gateway key info
