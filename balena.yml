@@ -6,7 +6,7 @@ joinable: false
 post-provisioning: >-
   ## Usage instructions
   
-  WIP
+  Follow the instructions [here](https://github.com/mpous/helium-data-hotspot) to start the data-only Helium hotspot into the Helium blockchain.
   
 assets:
   repository:
@@ -25,3 +25,11 @@ data:
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
     - raspberrypi4-64
+    - raspberrypi3-64
+    - raspberrypi3
+    - fincm3
+    - raspberry-pi2
+    - raspberry-pi
+    
+    
+

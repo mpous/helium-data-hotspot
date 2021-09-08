@@ -8,9 +8,8 @@ services:
     volumes:
       - 'pktfwdr:/var/pktfwd'
 
-  helium-miner:
-    #build: ./hm-gatewayrs
-    image: "nebraltd/hm-gatewayrs:a30790a05b186b7fbb9afa27b7bb02e4fa44e764"
+  gatewayrs:
+    build: ./hm-gatewayrs
     expose:
       - "1680"   
     ports:
