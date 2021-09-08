@@ -14,7 +14,7 @@ Read more information about the milestones and what's possible to get [here](htt
 * Raspberry Pi 0/2/3/4 or [balenaFin](https://www.balena.io/fin/)
 * SD card in case of the RPi 0/2/3/4
 * Power supply and (optionally) ethernet cable
-* LoRa concentrator (SX1301 or SX1302) (e.g. [RAK2245](https://store.rakwireless.com/products/rak2245-pi-hat) and [RAK2287](https://www.rakwireless.com/en-us/products/lpwan-gateways-and-concentrators/rak2287))
+* LoRa concentrator (SX1302 SPI based) (e.g. [RAK2287](https://www.rakwireless.com/en-us/products/lpwan-gateways-and-concentrators/rak2287))
 
 ### Software
 
