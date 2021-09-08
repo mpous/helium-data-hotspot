@@ -49,7 +49,6 @@ While the device boots (it will eventually show up in the balenaCloud dashboard)
 cd ~/workspace
 git clone https://github.com/mpous/helium-data-hotspot
 cd helium-data-hotspot
-git submodule update --init
 ```
 - Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code to the fleet with `balena push <fleet-name>`
 - See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
