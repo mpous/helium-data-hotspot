@@ -1,0 +1,8 @@
+[log]
+method = "stdio"
+level = "info"
+timestamp = false
+
+[update]
+platform = "raspi01"
+enabled = true
