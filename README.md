@@ -4,14 +4,15 @@ This is a balena version based on the Nebra helium hotspot.
 
 ## Disclaimer
 
-*This Helium Hotspot is going to transfer LoRa data to Helium but it's not going to perform proof-of-coverage or anything else to retrieve tokens. Read more information about the milestones and what's possible to get [here](https://docs.helium.com/mine-hnt/light-hotspots)*
+*This Helium Hotspot is going to transfer LoRa data to Helium OUIs but it's not going to perform proof-of-coverage or anything else to retrieve tokens. 
+Read more information about the milestones and what's possible to get [here](https://docs.helium.com/mine-hnt/light-hotspots)*
 
 ## Requirements
 
 ### Hardware
 
-* Raspberry Pi 3/4 or [balenaFin](https://www.balena.io/fin/)
-* SD card in case of the RPi 3/4
+* Raspberry Pi 0/2/3/4 or [balenaFin](https://www.balena.io/fin/)
+* SD card in case of the RPi 0/2/3/4
 * Power supply and (optionally) ethernet cable
 * LoRa concentrator (SX1301 or SX1302) (e.g. [RAK2245](https://store.rakwireless.com/products/rak2245-pi-hat) and [RAK2287](https://www.rakwireless.com/en-us/products/lpwan-gateways-and-concentrators/rak2287))
 
@@ -57,7 +58,7 @@ git submodule update --init
 
 Once the device is online and the services `packet-forwarder` and `helium-miner` are downloaded and installed go to `Device Variables`:
 
-* Create the variable for all the services `VARIANT` with your hardware definition (e.g. `DIY-RAK2287`). You can find here [the list of hardware compatible](https://github.com/NebraLtd/helium-hardware-definitions). 
+* Create the variable for all the services `VARIANT` with your hardware definition. During the test is being used a Raspberry Pi 4 with RAK2287 LoRa concentrator and the `VARIANT` is defined  `DIY-RAK2287`. You can find here [the list of hardware compatible](https://github.com/NebraLtd/helium-hardware-definitions). 
 
 * Create the variable for all the services `REGION_OVERRIDE` with your LoRa region (e.g. `EU868`). You can find here [the list of LoRa regions compatible](https://github.com/NebraLtd/hm-pktfwd).
 
