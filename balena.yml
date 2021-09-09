@@ -9,6 +9,7 @@ post-provisioning: >-
   A Data-Only Helium Hotspot is a variation of Helium Hotspots that can participate on the Helium Network by transferring data from the end devices (LoRaWAN nodes). They are eligible for Network Data Transfer Rewards but not Proof of Coverage Rewards.
   If you only need to send/receive data through the Helium Network this is a good solution.
 
+
   ## Installation instructions
   
   Running this project is as simple as deploying it to a balenaCloud application. You can do it in just one click by using the button `Fork this fleet`.
@@ -16,8 +17,10 @@ post-provisioning: >-
   This project is currently based on Nebra Light Hotspot. Once the Hotspot is online and the services `packet-forwarder` and `gatewayrs` are downloaded and installed go to `Device Variables`.
   
   * This project is compatible with all the Rapsberry Pi family running RAK2287 LoRa concentrator (SPI based) with a Pi Hat. In case you use something different change the `VARIANT` variable. If you have doubts check the [Nebra list of compatible hardware](https://github.com/NebraLtd/helium-hardware-definitions).
+  
   * By default the defined region is Europe. If you are not based in Europe change the variable `REGION_OVERRIDE` to `US915` or something different. Check different regions available [here](https://github.com/NebraLtd/hm-pktfwd).
 
+  
   At this point, go to Terminal and select the `gatewayrs` service. 
   
   Type `helium_gateway key info` and you will get a JSON like this below.
@@ -25,9 +28,12 @@ post-provisioning: >-
   `{ "address": <hotspot address>, "name": <hotspot name> }`
   
   With the `Hotspot Address` you will be able to join your data-only Helium Hotspot into the Helium Blockchain. To do this, follow the instructions [here](https://github.com/mpous/helium-data-hotspot#join-the-helium-blockchain-with-your-data-only-hotspot).
+
+  This is important. At this point, remember to back-up your `gateway_key.bin` key. 
   
   For more detailed information follow the instructions [here](https://github.com/mpous/helium-data-hotspot).
 
+  
   ## Usage instructions
   
   Once the Hotspot is registered into the Helium Network. You can check the status in the Helium Explorer using this URL
