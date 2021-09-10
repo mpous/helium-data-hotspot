@@ -12,14 +12,28 @@ post-provisioning: >-
 
   ## Installation instructions
   
+  ### Hardware and software needed
+  
+  * Raspberry Pi 0/2/3/4 or [balenaFin](https://balena.io/fin)
+  * RAK 2287 SPI LoRa concentrator and RAK2287 Pi Hat
+  * SD card
+  * [balenaEtcher](https://balena.io/etcher/)
+  
+  ### Deploy the code
+  
   Running this project is as simple as deploying it to a balenaCloud application. You can do it in just one click by using the button `Fork this fleet`.
   
-  This project is currently based on Nebra Light Hotspot. Once the Hotspot is online and the services `packet-forwarder` and `gatewayrs` are downloaded and installed go to `Device Variables`.
+  This project is currently based on Nebra Light Hotspot. Once the Hotspot is online and the services `packet-forwarder` and `gatewayrs` are downloaded and installed. 
+  
+  ### Configure Device Variables
+  
+  Go to `Device Variables`.
   
   * This project is compatible with all the Rapsberry Pi family running RAK2287 LoRa concentrator (SPI based) with a Pi Hat. In case you use something different change the `VARIANT` variable. If you have doubts check the [Nebra list of compatible hardware](https://github.com/NebraLtd/helium-hardware-definitions).
   
-  * By default the defined region is Europe. If you are not based in Europe change the variable `REGION_OVERRIDE` to `US915` or something different. Check different regions available [here](https://github.com/NebraLtd/hm-pktfwd).
+  * By default the defined region is Europe (`EU868`). If you are not based in Europe change the variable `REGION_OVERRIDE` to `US915` or something different. Check different regions available [here](https://github.com/NebraLtd/hm-pktfwd).
 
+  ### Test the Data Only Hotspot
   
   At this point, go to Terminal and select the `gatewayrs` service. 
   
@@ -27,13 +41,112 @@ post-provisioning: >-
   
   `{ "address": <hotspot address>, "name": <hotspot name> }`
   
-  With the `Hotspot Address` you will be able to join your data-only Helium Hotspot into the Helium Blockchain. To do this, follow the instructions [here](https://github.com/mpous/helium-data-hotspot#join-the-helium-blockchain-with-your-data-only-hotspot).
-
-  This is important. At this point, remember to back-up your `gateway_key.bin` key. 
+  With the `Hotspot Address` you will be able to join your data-only Helium Hotspot into the Helium Blockchain. 
   
-  For more detailed information follow the instructions [here](https://github.com/mpous/helium-data-hotspot).
-
+  ### Add your Data Only Hotspot to the Helium Blockchain
   
+  To join the Helium blockchain, at the moment (summer 2021) you only can use the [Helium CLI](https://docs.helium.com/wallets/cli-wallet/). The Helium app is still not compatible with the data-only hotspots. Install the [Helium CLI](https://docs.helium.com/wallets/cli-wallet/) wallet and follow these steps:
+
+#### Create a Helium wallet
+
+Install the Helium wallet CLI or use the wallet key from your mobile application. In case that you need to create a wallet from scratch, just type and follow the instructions.
+
+```
+helium-wallet create basic
+```
+
+Then to see `YOUR_WALLET` of the Helium wallet type:
+
+```
+helium-wallet info
+```
+
+#### Add the hotspot from balenaCloud Terminal
+
+Go to your device on balenaCloud and type on the HostOS terminal (before change `YOUR_WALLET` by your public Helium wallet ID):
+
+```
+root@d83bf778fc69:/etc/helium_gateway# helium_gateway add --owner YOUR_WALLET --payer YOUR_WALLET
+{
+  "address": "YOUR_ADDRESS",
+  "fee": 65000,
+  "mode": "dataonly",
+  "owner": "YOUR_WALLET",
+  "payer": "YOUR_WALLET",
+  "staking fee": 1000000,
+  "txn": "YOUR_TXN"
+}
+```
+
+Remember that to confirm all the commands you will need to add `--commit` at the end of the command.
+
+#### Add the hotspot from the Helium wallet using CLI
+
+Then go to your computer where you installed the Helium wallet CLI software. Copy your `txn` from the previous JSON response and type:
+
+```
+MacBookPro-Marc-Pous-2827:helium-wallet-v1.6.6-x86-64-macos marcpous$ ./helium-wallet hotspots add YOUR_TXN --commit
+Password: [hidden]
++-------------+-----------------------------------------------------+
+| Key         | Value                                               |
++-------------+-----------------------------------------------------+
+| Address     | YOUR_ADDRESS                                        |
++-------------+-----------------------------------------------------+
+| Payer       | YOUR_WALLET                                         |
++-------------+-----------------------------------------------------+
+| Fee         | 65000                                               |
++-------------+-----------------------------------------------------+
+| Staking fee | 1000000                                             |
++-------------+-----------------------------------------------------+
+| Hash        | YOUR_HASH                                           |
++-------------+-----------------------------------------------------+
+```
+
+You will need to have some Data Credits to be able to do this operation (1065000 DCs).
+
+#### Assert the location of the Hotspot
+
+Finally you will need to assert the location of the data-only Helium hotspot. Cpy your 
+
+```
+MacBookPro-Marc-Pous-2827:helium-wallet-v1.6.6-x86-64-macos marcpous$ ./helium-wallet hotspots assert --gateway YOUR_ADDRESS --lat=YOUR_LAT --lon=YOUR_LON --mode dataonly --commit
+Password: [hidden]
++------------------+-----------------------------------------------------+
+| Key              | Value                                               |
++------------------+-----------------------------------------------------+
+| Address          | YOUR_ADDRESS                                        |
++------------------+-----------------------------------------------------+
+| Location         | LOCATION_HASH                                       |
++------------------+-----------------------------------------------------+
+| Payer            | YOUR_WALLET                                         |
++------------------+-----------------------------------------------------+
+| Nonce            | 1                                                   |
++------------------+-----------------------------------------------------+
+| Fee (DC)         | 55000                                               |
++------------------+-----------------------------------------------------+
+| Staking Fee (DC) | 500000                                              |
++------------------+-----------------------------------------------------+
+| Gain (dBi)       | 1.2                                                 |
++------------------+-----------------------------------------------------+
+| Elevation        | 0                                                   |
++------------------+-----------------------------------------------------+
+| Hash             | YOUR_HASH                                           |
++------------------+-----------------------------------------------------+
+
+```
+
+And now that should have worked.
+  
+  ### Backup your gateway_key
+
+  ***This is important!*** At this point, remember to back-up your `gateway_key.bin` key. 
+  
+* Open an SSH session to the "host-os" on balenaCloud Terminal.
+* Type this command and keep note of the `(YOUR INSTANCE)_miner-storage`: `ls /var/lib/docker/volumes`
+* Type this command to get a link to download the gateway key (note to replace the `YOUR INSTANCE` part with the container number that you got from the previous command) `curl -F "file=@/var/lib/docker/volumes/(YOUR INSTANCE)_miner-storage/_data#/gateway_key.bin" https://file.io`
+* Use the outputted file.io link to securely download your swarm key. The link only works one time.
+
+
   ## Usage instructions
   
   Once the Hotspot is registered into the Helium Network. You can check the status in the Helium Explorer using this URL
