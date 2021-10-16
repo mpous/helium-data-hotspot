@@ -8,7 +8,7 @@ services:
     volumes:
       - 'pktfwdr:/var/pktfwd'
 
-  gatewayrs:
+  helium-miner:
     build: ./hm-gatewayrs
     expose:
       - "1680"   
