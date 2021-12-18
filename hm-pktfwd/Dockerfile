@@ -1,6 +1,7 @@
 # Packet Forwarder Docker File
 # (C) Nebra Ltd 2019
 # Licensed under the MIT License.
+# Updated for Balena x Helium Data Gateway example project
 
 ####################################################################################################
 ################################## Stage: builder ##################################################
@@ -34,7 +35,7 @@ RUN apt-get update && \
     # Because the PATH is already updated above, this command creates a new venv AND activates it
     # Given venv is active, this `pip` refers to the python3 variant
 RUN python3 -m venv /opt/iotloragateway/dev/venv && \
-    pip install --no-cache-dir -r requirements.txt
+    pip3 install --no-cache-dir -r requirements.txt
 
 # Copy the buildfiles and sx1302 concentrator fixes
 COPY buildfiles buildfiles
@@ -43,6 +44,10 @@ COPY sx1302fixes sx1302fixes
 # Clone the lora gateway and packet forwarder repos
 RUN git clone https://github.com/NebraLtd/lora_gateway.git
 RUN git clone https://github.com/NebraLtd/packet_forwarder.git
+
+# Download original Lora Gateway SPI source
+RUN wget -O lora_gateway/libloragw/src/loragw_spi.native.c.template https://raw.githubusercontent.com/Lora-net/lora_gateway/master/libloragw/src/loragw_spi.native.c
+RUN cp lora_gateway/libloragw/src/loragw_spi.native.c.template lora_gateway/libloragw/src/loragw_spi.native.c
 
 # Create folder needed by packetforwarder compiler
 RUN mkdir -p /opt/iotloragateway/packetforwarder
