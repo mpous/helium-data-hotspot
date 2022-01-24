@@ -7,4 +7,4 @@ timestamp = false
 
 [update]
 platform = "raspi01"
-enabled = false
+enabled = true
