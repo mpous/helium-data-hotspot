@@ -1,3 +1,5 @@
+listen = "helium-miner:1680"
+
 [log]
 method = "stdio"
 level = "info"
@@ -5,4 +7,4 @@ timestamp = false
 
 [update]
 platform = "raspi01"
-enabled = true
+enabled = false

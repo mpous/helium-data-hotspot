@@ -3,13 +3,19 @@
 rm -f settings.toml
 rm -f /etc/helium_gateway/settings.toml
 
-if ! LISTEN_ADDR=$(/bin/hostname -i)
-then
-  echo "Can't get hostname"
-  exit 1
-else
-  echo 'listen_addr = "'"${LISTEN_ADDR}"':1680"' >> settings.toml
-fi
+echo "Checking for I2C device"
+
+mapfile -t data < <(i2cdetect -y 1)
+
+for i in $(seq 1 ${#data[@]}); do
+    # shellcheck disable=SC2206
+    line=(${data[$i]})
+    # shellcheck disable=SC2068
+    if echo ${line[@]:1} | grep -q 60; then
+        echo "ECC is present."
+        ECC_CHIP=True
+    fi
+done
 
 if [[ -v REGION_OVERRIDE ]]
 then
@@ -19,7 +25,11 @@ else
   exit 1
 fi
 
-if [ -f "/var/data/gateway_key.bin" ]
+if [[ -v ECC_CHIP ]]
+then
+  echo "Using ECC for public key."
+  echo 'keypair = "ecc://i2c-1:96&slot=0"' >> settings.toml
+elif [ -f "/var/data/gateway_key.bin" ]
 then
   echo "Key file already exists"
   echo 'keypair = "/var/data/gateway_key.bin"' >> settings.toml
@@ -35,7 +45,6 @@ else
   fi
 fi
 
-echo "" >> settings.toml
 cat /etc/helium_gateway/settings.toml.template >> settings.toml
 cp settings.toml /etc/helium_gateway/settings.toml
 

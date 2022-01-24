@@ -3,85 +3,47 @@ version: '2'
 services:
 
   packet-forwarder:
-    build: ./hm-pktfwd
+    image: nebraltd/hm-pktfwd
+    depends_on:
+      - helium-miner
+    restart: always
     privileged: true
     volumes:
-      - 'pktfwdr:/var/pktfwd'
+      - pktfwdr:/var/pktfwd
 
-  gatewayrs:
-    build: ./hm-gatewayrs
+  helium-miner:
+    image: nebraltd/hm-gatewayrs
+    depends_on:
+      - dbus-session
     expose:
-      - "1680"   
+      - "1680"
+      - "4467"
     ports:
       - "44158:44158/tcp"
     volumes:
-      - 'miner-storage:/var/data'
-      - 'miner-log:/var/log/miner'
-      - 'pktfwdr:/var/pktfwd'
+      - miner-storage:/var/data
+      - miner-log:/var/log/miner
+      - pktfwdr:/var/pktfwd
+      - dbus:/session/dbus
     cap_add:
       - SYS_RAWIO
     devices:
-      - "/dev/i2c-1:/dev/i2c-1"
+      - /dev/i2c-1:/dev/i2c-1
+    restart: on-failure
     environment:
-      - 'DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket'
-      - 'RELEASE_BUMPER=foobar'
-    labels:
-      io.balena.features.dbus: '1'
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/session/dbus/session_bus_socket
+      - RELEASE_BUMPER=foobar
 
-#  dbus:
-#    build: ./dbus
-#    restart: always
-#    privileged: true
-#    ports:
-#      - "55884:55884"
-#    volumes:
-#      - 'dbus-config:/etc/dbus-1/system.d/'
+  dbus-session:
+    image: balenablocks/dbus:rpi-0.0.2
+    restart: always
+    volumes:
+      - dbus:/session/dbus
+    environment:
+      - DBUS_ADDRESS=unix:path=/session/dbus/session_bus_socket
 
-#  bluez:
-#    build: ./bluez
-#    restart: always
-#    privileged: true
-#    network_mode: host
-#    cap_add:
-#      - NET_ADMIN
-#    environment:
-#      - 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=localhost,port=55884'
-#    labels:
-#      io.balena.features.dbus: '1'
-#    depends_on:
-#      - dbus
-
-#  connman:
-#    build: ./connman
-#    restart: always
-#    privileged: true
-#    network_mode: host
-#    environment:
-#      - 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=localhost,port=55884'
-#    labels:
-#      io.balena.features.dbus: '1'
-#    depends_on:
-#      - dbus
-
-#  gateway-config:
-#    build: ./gateway-config
-#    restart: always
-#    environment:
-#      - 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=dbus,port=55884'
-      # The system bus forbids a lot of actions by default, use the session
-      # bus config instead
-      #- 'DBUS_SESSION_BUS_ADDRESS=tcp:host=dbus,port=55884'
-      #- 'DBUS_SYSTEM_BUS_ADDRESS=tcp:host=dbus,port=55887'
-#    volumes:
-#      - 'dbus-config:/mnt/dbus-config'
-#    depends_on:
-#      - dbus
-#      - bluez
-#      - connman
-      
 volumes:
   miner-storage:
   miner-log:
   pktfwdr:
-#  dbus-config:
-
+  dbus:
