@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Deleting settings.toml"
+
 rm -f settings.toml
 rm -f /etc/helium_gateway/settings.toml
 

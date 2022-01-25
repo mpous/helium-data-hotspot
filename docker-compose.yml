@@ -3,7 +3,7 @@ version: '2'
 services:
 
   packet-forwarder:
-    image: nebraltd/hm-pktfwd
+    build: ./hm-pktfwd
     depends_on:
       - helium-miner
     restart: always
@@ -12,7 +12,7 @@ services:
       - pktfwdr:/var/pktfwd
 
   helium-miner:
-    image: nebraltd/hm-gatewayrs
+    build: ./hm-gatewayrs
     depends_on:
       - dbus-session
     expose:
