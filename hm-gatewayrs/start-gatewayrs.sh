@@ -3,7 +3,7 @@
 rm -f settings.toml
 rm -f /etc/helium_gateway/settings.toml
 
-echo "Checking for I2C device"
+echo "Checking for I2C device!!"
 
 mapfile -t data < <(i2cdetect -y 1)
 
@@ -34,12 +34,14 @@ then
   echo "Key file already exists"
   echo 'keypair = "/var/data/gateway_key.bin"' >> settings.toml
 else
-  echo "Copying key file to persistent storage"
+  echo "Copying key file to persistent storage... "
   if ! PUBLIC_KEYS=$(/usr/bin/helium_gateway -c /etc/helium_gateway key info)
   then
-    echo "Can't get miner key info"
+    echo "$(PUBLIC_KEYS)"
+    echo "Can't get miner key info (i)"
     exit 1
   else
+    echo "Copying..."
     cp /etc/helium_gateway/gateway_key.bin /var/data/gateway_key.bin
     echo 'keypair = "/var/data/gateway_key.bin"' >> settings.toml
   fi
@@ -50,7 +52,8 @@ cp settings.toml /etc/helium_gateway/settings.toml
 
 if ! PUBLIC_KEYS=$(/usr/bin/helium_gateway -c /etc/helium_gateway key info)
 then
-  echo "Can't get miner key info"
+  echo "$(settings.toml)"
+  echo "Can't get miner key info (ii)"
   exit 1
 else
   echo "$PUBLIC_KEYS" > /var/data/key_json

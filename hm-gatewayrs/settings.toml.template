@@ -8,3 +8,6 @@ timestamp = false
 [update]
 platform = "raspi01"
 enabled = true
+
+[cache]
+store="/var/data/cache"
