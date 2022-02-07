@@ -1,66 +1,81 @@
 #!/bin/bash
 
-echo "Deleting settings.toml"
+echo "Starting start-gatewayrs.sh"
 
-rm -f settings.toml
-rm -f /etc/helium_gateway/settings.toml
+TARGET_DIR=/etc/helium_gateway
 
-echo "Checking for I2C device!!"
-
-mapfile -t data < <(i2cdetect -y 1)
-
-for i in $(seq 1 ${#data[@]}); do
-    # shellcheck disable=SC2206
-    line=(${data[$i]})
-    # shellcheck disable=SC2068
-    if echo ${line[@]:1} | grep -q 60; then
-        echo "ECC is present."
-        ECC_CHIP=True
-    fi
-done
-
-if [[ -v REGION_OVERRIDE ]]
-then
-  echo 'region = "'"${REGION_OVERRIDE}\"" >> settings.toml
-else
-  echo "REGION_OVERRIDE not set"
+if [ ! -d ${TARGET_DIR} ] ; then
+  # No directory mounted, better to exit than creating IDs inside a container
+  echo "You must mount a persistent directory for /opt/helium_gateway"
   exit 1
 fi
 
-if [[ -v ECC_CHIP ]]
-then
-  echo "Using ECC for public key."
-  echo 'keypair = "ecc://i2c-1:96&slot=0"' >> settings.toml
-elif [ -f "/var/data/gateway_key.bin" ]
-then
-  echo "Key file already exists"
-  echo 'keypair = "/var/data/gateway_key.bin"' >> settings.toml
-else
-  echo "Copying key file to persistent storage... "
-  if ! PUBLIC_KEYS=$(/usr/bin/helium_gateway -c /etc/helium_gateway key info)
-  then
-    echo "$(PUBLIC_KEYS)"
-    echo "Can't get miner key info (i)"
-    exit 1
-  else
-    echo "Copying..."
-    cp /etc/helium_gateway/gateway_key.bin /var/data/gateway_key.bin
-    echo 'keypair = "/var/data/gateway_key.bin"' >> settings.toml
+echo "Checking default.toml"
+
+if [ ! -f ${TARGET_DIR}/default.toml ] ; then
+  # The container has not been initialized
+  # move the configuration file to the external directory
+  echo "Initializing gatewayrs"
+  cp -R /etc/helium_gateway/* ${TARGET_DIR}/
+
+  # Add the ZONE in file
+  if [ ! -z "${REGION_OVERRIDE}" ] ; then
+    echo "Setting up Zone for ${REGION_OVERRIDE}"
+    mv ${TARGET_DIR}/settings.toml ${TARGET_DIR}/settings.bak
+    (echo "region=\"${REGION_OVERRIDE}\"" ; cat ${TARGET_DIR}/settings.bak ) > ${TARGET_DIR}/settings.toml
   fi
-fi
 
-cat /etc/helium_gateway/settings.toml.template >> settings.toml
-cp settings.toml /etc/helium_gateway/settings.toml
+  if [ ! -z "${MINER_UPDATE}" ] ; then
+    echo "Setting up auto update status ${MINER_UPDATE}"
+    mv ${TARGET_DIR}/settings.toml ${TARGET_DIR}/settings.bak
+    ( cat ${TARGET_DIR}/settings.bak ; echo "enabled=${MINER_UPDATE}" ) > ${TARGET_DIR}/settings.toml
+  fi 
+  
+  # Check if the gateway_key already exists
+  if [ -f ${TARGET_DIR}/gateway_key.bin ]; then
+    echo "Key file already exists"
+    echo "keypair = '\"${TARGET_DIR}\"/gateway_key.bin'" >> ${TARGET_DIR}/settings.toml
+  else
+      # Change the key path
+      echo "Key file doesn't exist."
+      mv ${TARGET_DIR}/settings.toml ${TARGET_DIR}/settings.bak
+      ( echo "keypair = \"${TARGET_DIR}/gateway_key.bin\"" ; cat ${TARGET_DIR}/settings.bak ) > ${TARGET_DIR}/settings.toml
+      rm ${TARGET_DIR}/settings.bak
+  fi
 
-if ! PUBLIC_KEYS=$(/usr/bin/helium_gateway -c /etc/helium_gateway key info)
-then
-  echo "$(settings.toml)"
-  echo "Can't get miner key info (ii)"
-  exit 1
+  # Change the logger
+  mv ${TARGET_DIR}/settings.toml ${TARGET_DIR}/settings.bak
+  cat ${TARGET_DIR}/settings.bak | sed -e 's/syslog/stdio/' > ${TARGET_DIR}/settings.toml
+  rm ${TARGET_DIR}/settings.bak
+
+  # Change the listener
+  mv ${TARGET_DIR}/settings.toml ${TARGET_DIR}/settings.bak
+  cat ${TARGET_DIR}/settings.bak | sed -e 's/listen_addr/listen/' > ${TARGET_DIR}/settings.toml
+  rm ${TARGET_DIR}/settings.bak
+
+  echo "Ready to call helium_gateway server"
+
+  /usr/bin/helium_gateway -c ${TARGET_DIR} server &
+  sleep 3
+
+  # Make the gateway key to be created
+  /usr/bin/helium_gateway -c ${TARGET_DIR} key info
+  GWNAME=`/usr/bin/helium_gateway -c ${TARGET_DIR} key info | grep name | tr -s " " | cut -d ':' -f 2 | sed -e 's/[ \"]//g'` 
+  touch ${TARGET_DIR}/$GWNAME
+
+  # Add the name of the hostpot into the tags
+  #ID=$(curl -sX GET "https://api.balena-cloud.com/v5/device?\$filter=uuid%20eq%20'$BALENA_DEVICE_UUID'" \
+  #-H "Content-Type: application/json" \
+  #-H "Authorization: Bearer $BALENA_API_KEY" | \
+  #jq ".d | .[0] | .id")
+
+  #TAG_NAME=$(curl -sX POST \
+  #"https://api.balena-cloud.com/v5/device_tag" \
+  #-H "Content-Type: application/json" \
+  #-H "Authorization: Bearer $BALENA_API_KEY" \
+  #--data "{ \"device\": \"$ID\", \"tag_key\": \"NAME\", \"value\": \"$GWNAME\" }" > /dev/null)
+
 else
-  echo "$PUBLIC_KEYS" > /var/data/key_json
-fi
-
-python3 /opt/nebra-gatewayrs/keys.py
-
-/usr/bin/helium_gateway -c /etc/helium_gateway server
+   echo "Starting helium_gateway server"
+   /usr/bin/helium_gateway -c ${TARGET_DIR} server
+fi 

@@ -1,7 +1,6 @@
 version: '2'
 
 services:
-
   packet-forwarder:
     build: ./hm-pktfwd
     depends_on:
@@ -10,40 +9,29 @@ services:
     privileged: true
     volumes:
       - pktfwdr:/var/pktfwd
+    environment:
+      - FIRMWARE_VERSION=v1.0.0-alpha.21
 
   helium-miner:
     build: ./hm-gatewayrs
-    depends_on:
-      - dbus-session
     expose:
       - "1680"
-      - "4467"
     ports:
       - "44158:44158/tcp"
     volumes:
       - miner-storage:/var/data
       - miner-log:/var/log/miner
       - pktfwdr:/var/pktfwd
-      - dbus:/session/dbus
     cap_add:
       - SYS_RAWIO
     devices:
       - /dev/i2c-1:/dev/i2c-1
     restart: on-failure
     environment:
-      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/session/dbus/session_bus_socket
       - RELEASE_BUMPER=foobar
-
-  dbus-session:
-    image: balenablocks/dbus:rpi-0.0.2
-    restart: always
-    volumes:
-      - dbus:/session/dbus
-    environment:
-      - DBUS_ADDRESS=unix:path=/session/dbus/session_bus_socket
+      - FIRMWARE_VERSION=v1.0.0-alpha.21
 
 volumes:
   miner-storage:
   miner-log:
   pktfwdr:
-  dbus:

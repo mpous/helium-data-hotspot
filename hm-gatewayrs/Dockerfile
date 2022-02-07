@@ -4,7 +4,7 @@ ARG GATEWAY_RS_RELEASE=v1.0.0-alpha.21
 FROM balenalib/raspberry-pi-debian:buster-run
 
 # Move to working directory
-WORKDIR /opt/nebra-gatewayrs
+WORKDIR /opt/gatewayrs
 
 ARG SYSTEM_TIMEZONE
 ARG GATEWAY_RS_RELEASE
@@ -32,6 +32,7 @@ RUN dpkg -i helium-gateway-*-raspi01.deb
 COPY start-gatewayrs.sh .
 COPY keys.py .
 COPY settings.toml.template /etc/helium_gateway/settings.toml.template
+COPY default.toml /etc/helium_gateway/default.toml
 
 # Run start-gatewayrs script
-ENTRYPOINT ["/opt/nebra-gatewayrs/start-gatewayrs.sh"]
+ENTRYPOINT ["/opt/gatewayrs/start-gatewayrs.sh"]

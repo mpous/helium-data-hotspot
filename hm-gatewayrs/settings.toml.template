@@ -1,4 +1,9 @@
+keypair = "/etc/helium_gateway/keypair/gateway_key.bin"
 listen = "helium-miner:1680"
+api = 4467
+
+region = "US915"
+pubkey = "11tk4zzbyfMPYYHYda255ACoqfYFVdrUSoCWrCYfn8BoyuYrERK"
 
 [log]
 method = "stdio"
