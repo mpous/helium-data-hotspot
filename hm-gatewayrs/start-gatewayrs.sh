@@ -35,20 +35,19 @@ echo "Interacting with ECC_CHIP"
 if [[ -v ECC_CHIP ]]
 then
   echo "Using ECC for public key."
-  echo 'keypair = "ecc://i2c-1:96&slot=0"' >> settings.toml
+  if [[ -v GW_KEYPAIR ]]
+  then
+    echo 'keypair = "'${GW_KEYPAIR}'"' >> settings.toml
+  else
+    echo 'keypair = "ecc://i2c-1:96&slot=0"' >> settings.toml
+  fi
 else
   echo "Key file already exists"
   echo 'keypair = "/var/data/gateway_key.bin"' >> settings.toml
 fi
 
-
-echo "Copying existing settings.toml.template to the new file"
 cat /etc/helium_gateway/settings.toml.template >> settings.toml
 cp settings.toml /etc/helium_gateway/settings.toml
-
-
-#echo "Running keys script"
-#python3 /opt/gatewayrs/keys.py
 
 
 echo "Calling helium_gateway server ..."
@@ -56,7 +55,6 @@ echo "Calling helium_gateway server ..."
 
 
 echo "Checking key info..."
-
 if ! PUBLIC_KEYS=$(/usr/bin/helium_gateway -c /etc/helium_gateway key info)
 then
   echo "Can't get miner key info"
