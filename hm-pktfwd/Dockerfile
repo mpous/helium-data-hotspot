@@ -1,6 +1,7 @@
 # Packet Forwarder Docker File
 # (C) Nebra Ltd 2021
 # Licensed under the MIT License.
+# Updated for Balena x Helium Data Gateway example project
 
 ####################################################################################################
 ########################### Stage: PktFwd Python App Builder #######################################
