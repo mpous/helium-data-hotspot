@@ -1,9 +1,14 @@
-ARG SYSTEM_TIMEZONE="Europe/London"
+ARG SYSTEM_TIMEZONE=Europe/London
+ARG GATEWAY_RS_RELEASE=v1.0.0-alpha.21
 
 FROM balenalib/raspberry-pi-debian:buster-run
 
 # Move to working directory
-WORKDIR /opt/nebra-gatewayrs
+WORKDIR /opt/gatewayrs
+
+ARG SYSTEM_TIMEZONE
+ARG GATEWAY_RS_RELEASE
+ENV GATEWAY_RS_RELEASE $GATEWAY_RS_RELEASE
 
 # Intall dependencies
 RUN \
@@ -20,8 +25,8 @@ RUN \
         rm -rf /var/lib/apt/lists/*
 
 # Pull in latest helium gatewayrs deb file and install
-#RUN wget https://github.com/helium/gateway-rs/releases/download/v1.0.0-alpha.15/helium-gateway-v1.0.0-alpha.15-raspi01.deb
-RUN wget https://github.com/helium/gateway-rs/releases/download/v1.0.0-alpha.19/helium-gateway-v1.0.0-alpha.19-raspi01.deb
+
+RUN wget https://github.com/helium/gateway-rs/releases/download/"$GATEWAY_RS_RELEASE"/helium-gateway-"$GATEWAY_RS_RELEASE"-raspi01.deb
 RUN dpkg -i helium-gateway-*-raspi01.deb
 
 # Copy start script and settings file
@@ -30,4 +35,4 @@ COPY keys.py .
 COPY settings.toml.template /etc/helium_gateway/settings.toml.template
 
 # Run start-gatewayrs script
-ENTRYPOINT ["/opt/nebra-gatewayrs/start-gatewayrs.sh"]
+ENTRYPOINT ["/opt/gatewayrs/start-gatewayrs.sh"]

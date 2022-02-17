@@ -199,6 +199,7 @@ data:
   applicationEnvironmentVariables:
     - VARIANT: DIY-RAK2287
     - REGION_OVERRIDE: EU868
+    - MINER_UPDATE: true
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
     - raspberrypi4-64
