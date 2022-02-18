@@ -31,7 +31,6 @@ RUN dpkg -i helium-gateway-*-raspi01.deb
 
 # Copy start script and settings file
 COPY start-gatewayrs.sh .
-COPY keys.py .
 COPY settings.toml.template /etc/helium_gateway/settings.toml.template
 
 # Run start-gatewayrs script
