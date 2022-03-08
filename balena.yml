@@ -3,7 +3,7 @@ type: sw.application
 description: >-
   Deploys the Helium Data Only Hotspot that doesn't mine any HNT
 joinable: false
-post-provisioning: >-
+post-provisioning: |
   ## What is a data-only Helium Hotspot?
   
   A Data-Only Helium Hotspot is a variation of Helium Hotspots that can participate on the Helium Network by transferring data from the end devices (LoRaWAN nodes). 
