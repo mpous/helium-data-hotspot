@@ -1,5 +1,5 @@
 ARG SYSTEM_TIMEZONE=Europe/London
-ARG GATEWAY_RS_RELEASE=v1.0.0-alpha.21
+ARG GATEWAY_RS_RELEASE=v1.0.0-alpha.27
 
 FROM balenalib/raspberry-pi-debian:buster-run
 
@@ -29,7 +29,7 @@ RUN \
 RUN wget https://github.com/helium/gateway-rs/releases/download/"$GATEWAY_RS_RELEASE"/helium-gateway-"$GATEWAY_RS_RELEASE"-raspi01.deb
 RUN dpkg -i helium-gateway-*-raspi01.deb
 
-# Copy start script and settings file
+# Copy start script and settings fil#
 COPY start-gatewayrs.sh .
 COPY settings.toml.template /etc/helium_gateway/settings.toml.template
 
