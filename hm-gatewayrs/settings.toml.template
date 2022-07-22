@@ -8,7 +8,7 @@ timestamp = false
 
 [update]
 # Enable update checking
-enabled = false
+enabled = true
 platform = "raspi01"
 
 [cache]
