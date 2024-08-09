@@ -21,7 +21,7 @@
 if [ -z "$2" ]; then 
     echo "CONCENTRATOR_RESET_PIN parameter not passed in, using value from the environment (val=${CONCENTRATOR_RESET_PIN})"
 else
-    CONCENTRATOR_RESET_PIN=$2
+    CONCENTRATOR_RESET_PIN=25
 fi
 
 WAIT_GPIO() {
